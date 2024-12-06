@@ -34,28 +34,9 @@ unsigned int vao;
 unsigned int ebo;
 unsigned int shaderProgram;
 
-const char* vertexShaderSource = R"(
-    #version 450
-    layout(location = 0) in vec3 vPos;
-    layout(location = 1) in vec4 vColor;
-    out vec4 Color;
-    void main()
-    {
-        Color = vColor;
-        gl_Position = vec4(vPos,1.0);
-    }
-)";
-
-const char* fragmentShaderSource = R"(
-    #version 450
-    out vec4 FragColor;
-    in vec4 Color;
-    void main(){
-        FragColor = Color;
-    }
-)";
 
 Shader m_shader;
+
 
 //==========================
 //=        INIT            =
@@ -130,32 +111,6 @@ void init()
 }
 
 //==========================
-//=        RENDER          =
-//==========================
-void render()
-{
-    // Do setup / math up here
-
-    // clear screen to start
-    glClearColor(0.95, 0.75, 0.87, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-
-    //render loop actual
-    //glUseProgram(shaderProgram);
-    m_shader.use();
-    //glBindVertexArray(vao);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    SDL_GL_SwapWindow(window);
-    //SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-    //SDL_RenderClear(renderer);
-
-    //SDL_RenderPresent(renderer); // use if SDL Renderer
-}
-
-//==========================
 //=        INPUT           =
 //==========================
 void input()
@@ -178,6 +133,36 @@ void input()
         }
     }
 }
+
+//====================================================================
+//==========================
+//=        RENDER          =
+//==========================
+
+void render()
+{
+    // Do setup / math up here
+
+    // clear screen to start
+    glClearColor(0.95, 0.75, 0.87, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+
+    //render loop actual
+    //glUseProgram(shaderProgram);
+    m_shader.use();
+    //glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    //glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    SDL_GL_SwapWindow(window);
+    //SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+    //SDL_RenderClear(renderer);
+
+    //SDL_RenderPresent(renderer); // use if SDL Renderer
+}
+//====================================================================
+
 
 //==========================
 //=        CLEANUP         =
