@@ -11,7 +11,7 @@ vec2 uv = fragCoord.xy / _iResolution.xy;
 
 float hash(vec2 xy)
 {
-    return 1.5* fract(sin(
+    return 1.7* fract(sin(
                  dot(xy.xy, 
                     (vec2(12.9898,78.233))))*43758.5453123)-0.5;
 }
