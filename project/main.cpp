@@ -18,13 +18,20 @@ bool running = true;
 
 float vertices[] = 
 {
-    -0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 1.0,
-     0.5, -0.5, 0.0, 0.0, 1.0, 0.0, 1.0,
-     0.0,  0.5, 0.0, 0.0, 0.0, 1.0, 1.0         
+     1.0,  1.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+     1.0, -1.0, 0.0, 0.0, 1.0, 0.0, 1.0,
+    -1.0, -1.0, 0.0, 0.0, 0.0, 1.0, 1.0,
+    -1.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0         
+};
+
+unsigned int indices[] = {
+    0, 1, 3,
+    1, 2, 3
 };
 
 unsigned int vbo;
 unsigned int vao;
+unsigned int ebo;
 unsigned int shaderProgram;
 
 const char* vertexShaderSource = R"(
@@ -108,53 +115,17 @@ void init()
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
+    glGenBuffers(1,&ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
     glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void*)0);
     glEnableVertexAttribArray(0);
 
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void*)(sizeof(float)*3));
     glEnableVertexAttribArray(1);
 
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    int success;
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        char infoLog[512];
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        printf("Failed to compile shader: %s", infoLog);
-    }
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        char infoLog[512];
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        printf("Failed to compile shader: %s", infoLog);
-    }
-
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if(!success){
-        char infoLog[512];
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        printf("Failed to link shader program: %s", infoLog);
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    //Shader m_shader("shader.vs", "shader.fs");
+    //create shader
     m_shader.createShader("project/shader.vs","project/shader.fs");
 }
 
@@ -172,8 +143,10 @@ void render()
     //render loop actual
     //glUseProgram(shaderProgram);
     m_shader.use();
-    glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    //glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    //glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     SDL_GL_SwapWindow(window);
     //SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
