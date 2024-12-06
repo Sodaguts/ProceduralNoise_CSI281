@@ -22,15 +22,17 @@ float noise(vec2 xy)
     vec2 f = xy - floor(xy);
 
     //corners
-    float a = hash(i);
-    float b = hash(i+vec2(1.0, 0.0));
-    float c = hash(i+vec2(0.0, 1.0));
-    float d = hash(i+vec2(1.0, 1.0));
+    float a = hash(i+vec2(0.0, 0.0));   //top left
+    float b = hash(i+vec2(1.0, 0.0));   //top right
+    float c = hash(i+vec2(0.0, 1.0));   //bot left
+    float d = hash(i+vec2(1.0, 1.0));   //bot right
 
     //interpolation
     vec2 u = smoothstep(0.0, 1.0, f);
 
-    return mix(a,b,u.x)+(c-a)*u.y * (1.0 - u.x) + (d-b) * u.x * u.y;
+    // return mix(a,b,u.x) + mix(b,c,u.y) + (c-a) * u.y * (1.0 - u.x) + (d-b) * u.x * u.y;
+    //return mix(a,b,u.x) + (c-a) * u.y * (1.0 - u.x) + (d-b) * u.x * u.y;
+    return mix(a,b,u.x) + (c-a) + mix(b,c,u.x) * u.x * (1.0-u.x) * u.y;
 }
 
 void main()

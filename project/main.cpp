@@ -36,7 +36,7 @@ unsigned int shaderProgram;
 
 
 Shader m_shader;
-float gridSize = 15.0;
+float gridSize = 25.0;
 
 
 //==========================
