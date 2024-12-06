@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
-#include <glad/glad.h>
+#include "shader.h"
 #include <stdio.h>
-#include <iostream>
+
 
 #define SCREEN_WIDTH 640 
 #define SCREEN_HEIGHT 480
@@ -47,6 +47,9 @@ const char* fragmentShaderSource = R"(
         FragColor = Color;
     }
 )";
+
+Shader m_shader;
+
 //==========================
 //=        INIT            =
 //==========================
@@ -150,6 +153,9 @@ void init()
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    //Shader m_shader("shader.vs", "shader.fs");
+    m_shader.createShader("project/shader.vs","project/shader.fs");
 }
 
 //==========================
@@ -164,7 +170,8 @@ void render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
     //render loop actual
-    glUseProgram(shaderProgram);
+    //glUseProgram(shaderProgram);
+    m_shader.use();
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
