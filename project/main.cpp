@@ -18,9 +18,9 @@ bool running = true;
 
 float vertices[] = 
 {
-    -0.5, -0.5, 0.0,
-     0.5, -0.5, 0.0,
-     0.0,  0.5, 0.0         
+    -0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 1.0,
+     0.5, -0.5, 0.0, 0.0, 1.0, 0.0, 1.0,
+     0.0,  0.5, 0.0, 0.0, 0.0, 1.0, 1.0         
 };
 
 unsigned int vbo;
@@ -30,8 +30,11 @@ unsigned int shaderProgram;
 const char* vertexShaderSource = R"(
     #version 450
     layout(location = 0) in vec3 vPos;
+    layout(location = 1) in vec4 vColor;
+    out vec4 Color;
     void main()
     {
+        Color = vColor;
         gl_Position = vec4(vPos,1.0);
     }
 )";
@@ -39,8 +42,9 @@ const char* vertexShaderSource = R"(
 const char* fragmentShaderSource = R"(
     #version 450
     out vec4 FragColor;
+    in vec4 Color;
     void main(){
-        FragColor = vec4(1.0,0.0,0.1,1.0);
+        FragColor = Color;
     }
 )";
 //==========================
@@ -101,8 +105,11 @@ void init()
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, sizeof(float) * 3, (const void*)0);
+    glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void*)(sizeof(float)*3));
+    glEnableVertexAttribArray(1);
 
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
