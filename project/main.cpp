@@ -36,6 +36,7 @@ unsigned int shaderProgram;
 
 
 Shader m_shader;
+float gridSize = 15.0;
 
 
 //==========================
@@ -142,6 +143,7 @@ void input()
 void render()
 {
     // Do setup / math up here
+    float time = (float)SDL_GetTicks() / 1000.0;
 
     // clear screen to start
     glClearColor(0.95, 0.75, 0.87, 1.0);
@@ -150,6 +152,9 @@ void render()
     //render loop actual
     //glUseProgram(shaderProgram);
     m_shader.use();
+    m_shader.setVec2("_iResolution", SCREEN_WIDTH, SCREEN_HEIGHT);
+    m_shader.setFloat("_gridSize", gridSize);
+    m_shader.setFloat("_iTime", time);
     //glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     //glDrawArrays(GL_TRIANGLES, 0, 3);

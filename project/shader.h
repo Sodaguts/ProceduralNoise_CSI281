@@ -114,6 +114,11 @@ class Shader
             glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
         };
 
+        void setVec2(const std::string &name, float x, float y)
+        {
+            glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
+        };
+
         private:
         //std::string vertexShaderSource;
 
