@@ -80,8 +80,8 @@ int main(int argc, char** argv){
             }
         }
 
-        //glClearColor(0.95, 0.75, 0.87, 1.0);
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // causes program to crash?
+        glClearColor(0.95, 0.75, 0.87, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // causes program to crash?
 
         SDL_GL_SwapWindow(window);
         //SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
