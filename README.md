@@ -1,5 +1,2 @@
 CSI281 Final Project 
-Todo:
-- SDL setup
-- makefile?
-- procNoise
+Attempt to implement Perlin Noise using SDL and OpenGL
