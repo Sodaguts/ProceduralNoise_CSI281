@@ -1,2 +1,2 @@
 CSI281 Final Project 
-Todo:
+Attempt to implement Perlin Noise using SDL and OpenGL
