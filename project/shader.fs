@@ -19,7 +19,7 @@ float hash(vec2 xy)
 float noise(vec2 xy)
 {
     vec2 i = floor(xy);
-    vec2 f = xy - floor(xy);
+    vec2 f = xy - i;
 
     //corners
     float a = hash(i+vec2(0.0, 0.0));   //top left
@@ -30,9 +30,10 @@ float noise(vec2 xy)
     //interpolation
     vec2 u = smoothstep(0.0, 1.0, f);
 
-    // return mix(a,b,u.x) + mix(b,c,u.y) + (c-a) * u.y * (1.0 - u.x) + (d-b) * u.x * u.y;
-    //return mix(a,b,u.x) + (c-a) * u.y * (1.0 - u.x) + (d-b) * u.x * u.y;
-    return mix(a,b,u.x) + (c-a) + mix(b,c,u.x) * u.x * (1.0-u.x) * u.y;
+    
+    return mix(a,b,u.x) + (c-a) + mix(c,d,u.x) * u.x * (1.0-u.x) * u.y;
+    //return mix(a,b,u.x) + mix(c,d,u.x) + mix(a,b,u.y) + mix(c,d, u.y) * u.x * u.y; // crazy parallelogram-like noise
+    // return mix(a,b,u.x) + (c-a) * u.y * (1.0 - u.x) + (d-b) * u.x * u.y; 
 }
 
 void main()
